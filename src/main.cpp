@@ -1,16 +1,5 @@
-/*******************************************************************************
- Copyright (C) 2019 Signify Holding
- All Rights Reserved.
- ********************************************************************************/
-
 #include <huestream/config/Config.h>
 #include <huestream/HueStream.h>
-//#include <huestream_example_console/App.h>
-//#include <huestream_example_console/ExplosionMenu.h>
-//#include <huestream_example_console/SequenceMenu.h>
-//#include <huestream_example_console/SawAndLightningMenu.h>
-//#include <huestream_example_console/RGBSpeedControlMenu.h>
-//#include <huestream_example_console/MyDemo.h>
 #include "Terminal.h"
 #include "RainbowEffect.h"
 
@@ -22,52 +11,6 @@
 
 using namespace std;
 using namespace huestream;
-
-/*
-class ConnectionFlowExample : public App {
-public:
-    ConnectionFlowExample() : App("HueConsoleExample", "PC") {}
-
-    void StartExample() override {
-        MainMenu();
-    }
-
-    void MainMenu() const {
-        auto print = true;
-        while (true) {
-            if (print) {
-                cout << "Main menu:" << endl;
-                cout << "e  Explosion demo" << endl;
-                cout << "s  Sequence demo" << endl;
-                cout << "l  Saw and Lightning demo" << endl;
-                cout << "r  RGB Speed Control demo" << endl;
-                cout << "m  My own personal demo" << endl;
-                cout << "q  Quit" << endl;
-                print = false;
-            }
-            auto key = Terminal::GetChar();
-            if (key == 'e') {
-                ExplosionMenu(_huestream).Run();
-                print = true;
-            } else if (key == 'l') {
-                SawAndLightningMenu(_huestream).Run();
-                print = true;
-            } else if (key == 's') {
-                SequenceMenu(_huestream).Run();
-                print = true;
-            } else if (key == 'r') {
-                RGBSpeedControlMenu(_huestream).Run();
-                print = true;
-            } else if (key == 'm') {
-                MyDemo(_huestream).Run();
-                print = true;
-            } else if (key == 'q') {
-                break;
-            }
-        }
-    }
-};
-*/
 
 void PressAnyKey() {
 	cout << "Press any key to continue...";
@@ -130,20 +73,6 @@ void worker(const BridgeInfo & info) {
 	bridge->SetUser(info.user);
 	bridge->SetClientKey(info.clientKey);
 	huestream->ConnectManualBridgeInfo(bridge);
-
-	/*
-	while (!huestream->IsStreamableBridgeLoaded()) {
-		auto bridge = huestream->GetLoadedBridge();
-		if (bridge->GetStatus() == BRIDGE_INVALID_GROUP_SELECTED) {
-			//A choice should be made between multiple groups
-			//Here we just pick the first one in the list
-			huestream->SelectGroup(bridge->GetGroups()->at(0));
-		} else {
-			PressAnyKey();
-			huestream->ConnectBridge();
-		}
-	}
-	*/
 
 	cout << "Starting effect..." << endl;
 

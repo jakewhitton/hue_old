@@ -1,8 +1,3 @@
-/*******************************************************************************
- Copyright (C) 2019 Signify Holding
- All Rights Reserved.
- ********************************************************************************/
-
 #ifndef HUESTREAM_EXAMPLE_CONSOLE_RAINBOWEFFECT_H_
 #define HUESTREAM_EXAMPLE_CONSOLE_RAINBOWEFFECT_H_
 
