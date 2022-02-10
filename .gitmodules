@@ -1,0 +1,3 @@
+[submodule "libs/EDK"]
+	path = libs/EDK
+	url = git@github.com:PhilipsHue/EDK.git
