@@ -2,6 +2,7 @@
 #include <huestream/HueStream.h>
 #include "Terminal.h"
 #include "RainbowEffect.h"
+#include "BridgeConfig.h"
 
 #include <stdio.h>
 #include <thread>
@@ -18,41 +19,19 @@ void PressAnyKey() {
 	cout << endl;
 }
 
-struct BridgeInfo
-{
-	string ip;
-	string user;
-	string clientKey;
-};
-
-array<BridgeInfo, 2> bridgeInfos
-{
-	BridgeInfo {
-		"192.168.0.122",
-		"oiH9kefbWTflGmd0jhe6Eb-RMLh4ChzJpwgiiryL",
-		"2E72B335B89510C40AC445AC93169D82"
-		
-	},
-	BridgeInfo {
-		"192.168.0.159",
-		"xfvYK0dUVgyEPVkSyw4QSoPP8SdEEI70dsGbxsp2",
-		"6F4F56702C83DC0843B786934FF94437"
-	}
-};
-
 bool running = true;
 
-void worker(const BridgeInfo & info) {
+void worker(const BridgeConfig & config) {
 
 	//Configure
-	string applicationName = "render";
-	string deviceName      = "thinkpad";
-	PersistenceEncryptionKey key("");
-    auto config = std::make_shared<Config>(applicationName, deviceName, key);
 
 	//Create the HueStream instance to work with
 	//Maintain this instance as a single instance per bridge in the application
-	auto huestream = std::make_shared<HueStream>(config);
+	string applicationName = "render";
+	string deviceName      = "thinkpad";
+	PersistenceEncryptionKey key("");
+	auto huestream = std::make_shared<HueStream>(
+		std::make_shared<Config>(applicationName, deviceName, key));
 	
 	//Register feedback callback
 	huestream->RegisterFeedbackCallback([](const FeedbackMessage &message) {
@@ -69,9 +48,9 @@ void worker(const BridgeInfo & info) {
 	//Connect to the bridge synchronous
 	auto bridgeSettings = std::make_shared<BridgeSettings>();
 	auto bridge = std::make_shared<Bridge>(bridgeSettings);
-	bridge->SetIpAddress(info.ip);
-	bridge->SetUser(info.user);
-	bridge->SetClientKey(info.clientKey);
+	bridge->SetIpAddress(config.ip);
+	bridge->SetUser(config.user);
+	bridge->SetClientKey(config.clientKey);
 	huestream->ConnectManualBridgeInfo(bridge);
 
 	cout << "Starting effect..." << endl;
@@ -97,9 +76,12 @@ void worker(const BridgeInfo & info) {
 
 int main(int argc, char *argv[]) {
 
+	assert(argc == 2);
+	auto bridgeConfigs = parseBridgeConfigs(argv[1]);
+
 	vector<thread> workers;
-	for (const auto & info : bridgeInfos) {
-		workers.emplace_back(worker, info);
+	for (const auto & config : bridgeConfigs) {
+		workers.emplace_back(worker, config);
 	}
 
 	PressAnyKey();
