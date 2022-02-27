@@ -30,8 +30,15 @@ void MultiBridgeRenderer::start()
 void MultiBridgeRenderer::stop()
 {
 	std::cout << "Stopping MultiBridgeRenderer..." << std::endl;
+
 	running_ = false;
 	thread_.join();
+
+	for (const auto & renderer : renderer_)
+	{
+		renderer->ShutDown();
+	}
+
 }
 
 void MultiBridgeRenderer::run()

@@ -12,17 +12,18 @@ BridgeRenderer::BridgeRenderer(const BridgeConfig & config, huestream::Color * f
 	: HueStream(hueConfig)
 {
 	//Register feedback callback
-	//huestream->RegisterFeedbackCallback([](const FeedbackMessage &message)
-	//{
-	//	//Handle connection flow feedback messages here to guide user to connect to the HUE bridge
-	//	//Here we just write to stdout
-	//	if (message.GetMessageType() == FeedbackMessage::FEEDBACK_TYPE_USER) {
-	//		std::cout << message.GetUserMessage() << std::endl;
-	//	}
-	//	if (message.GetId() == FeedbackMessage::ID_DONE_COMPLETED) {
-	//		std::cout << "Connected to bridge with ip: " << message.GetBridge()->GetIpAddress() << std::endl;
-	//	}
-	//});
+	RegisterFeedbackCallback([this](const FeedbackMessage &message)
+	{
+		//Handle connection flow feedback messages here to guide user to connect to the HUE bridge
+		//Here we just write to stdout
+		if (message.GetMessageType() == FeedbackMessage::FEEDBACK_TYPE_USER) {
+			std::cout << message.GetUserMessage() << std::endl;
+		}
+		if (message.GetId() == FeedbackMessage::ID_DONE_COMPLETED) {
+			std::cout << "Connected to bridge with ip: " << message.GetBridge()->GetIpAddress() << std::endl;
+			connected_ = true;
+		}
+	});
 
 	//Connect to the bridge synchronous
 	auto bridge = std::make_shared<Bridge>(
@@ -30,7 +31,7 @@ BridgeRenderer::BridgeRenderer(const BridgeConfig & config, huestream::Color * f
 	bridge->SetIpAddress(config.ip);
 	bridge->SetUser(config.user);
 	bridge->SetClientKey(config.clientKey);
-	ConnectManualBridgeInfo(bridge);
+	ConnectManualBridgeInfoAsync(bridge);
 
 	auto layer = 0;
 	auto name = "my-renderer";

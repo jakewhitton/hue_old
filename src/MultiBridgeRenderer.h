@@ -32,8 +32,8 @@ private:
 
 	// Timing
 	double fps_ = 30;
-	std::chrono::time_point frameStart;
-	std::chrono::time_point frameEnd;
-	std::chrono::duration<double> desiredFrameTime =
+	std::chrono::time_point<std::chrono::system_clock> frameStart_;
+	std::chrono::time_point<std::chrono::system_clock> frameEnd_;
+	std::chrono::duration<double> desiredFrameTime_ =
 		std::chrono::milliseconds(33);
 };

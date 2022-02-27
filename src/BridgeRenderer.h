@@ -16,4 +16,6 @@ private:
 
 	BridgeRenderer(const BridgeConfig & config, huestream::Color * framebuffer,
 		           huestream::ConfigPtr hueConfig);
+
+	bool connected_ = false;
 };
