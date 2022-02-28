@@ -1,5 +1,4 @@
-#include "MultiBridgeRenderer.h"
-#include "Config.h"
+#include "RainbowRenderer.h"
 #include <cassert>
 #include <iostream>
 #include "Terminal.h"
@@ -13,7 +12,7 @@ int main(int argc, char *argv[]) {
 
 	assert(argc == 2);
 	auto config = configFromFile(argv[1]);
-	auto renderer = MultiBridgeRenderer(config);
+	auto renderer = RainbowRenderer(config);
 	std::cout << "Press any key to stop..." << std::endl;
 	renderer.start();
 
