@@ -60,10 +60,10 @@ Config configFromFile(const char * path)
 
 	// Create one BridgeRenderer for each line in the config
 	const char * lineStart = buf;
-	for (; buf <= bufEnd; ++buf)
+	for (; buf < bufEnd; ++buf)
 	{
-		char c = buf < bufEnd ? *buf : '\n';
-		if (c == '\n')
+		char c = *buf;
+		if (c == '\n' )
 		{
 			result.emplace_back(std::string_view(lineStart, buf - lineStart));
 			lineStart = buf + 1;

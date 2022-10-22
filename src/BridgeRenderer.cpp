@@ -31,6 +31,7 @@ BridgeRenderer::BridgeRenderer(const BridgeConfig & config, huestream::Color * f
 	bridge->SetIpAddress(config.ip);
 	bridge->SetUser(config.user);
 	bridge->SetClientKey(config.clientKey);
+	std::cout << "Initiating attempt to connect to " << config.ip << "..." << std::endl;
 	ConnectManualBridgeInfoAsync(bridge);
 
 	auto layer = 0;
